@@ -1,0 +1,7 @@
+queuer/target
+# For some reason, default .gitignore suggested ignoring that for bins
+queuer/Cargo.lock 
+
+**/.idea
+**/.vscode
+**/__pycache__

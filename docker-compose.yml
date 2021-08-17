@@ -1,0 +1,23 @@
+version: "3"
+
+services: 
+  redis:
+    image: "redis:alpine"
+    restart: always
+    volumes:
+      - redis_cache:/var/lib/redis
+
+  queuer:
+    build: queuer
+    depends_on: 
+      - redis
+
+  rss-importer:
+    build: rss-importer
+    depends_on: 
+      - queuer
+    environment: 
+      - QUEUER_URI="http://queuer:8080/submit"
+
+volumes: 
+  redis_cache:
