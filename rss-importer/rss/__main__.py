@@ -13,13 +13,14 @@ QUEUER_URI = environ.get("QUEUER_URI")
 DELAY = int(environ.get("DELAY", "60"))
 
 
-async def send(item: News, s: aiohttp.ClientSession):
-    async with s:
+async def send(item: News):
+    async with aiohttp.ClientSession() as s:
         async with s.post(QUEUER_URI, data=item.to_json()) as resp:
             if resp.ok:
-                logging.info(f"Sent {item.url} to queuer")
+                logging.info(f"Sent {item.uri} to queuer")
             else:
-                logging.warning(f"Failed to send {item.uri} to queuer, {resp.status}")
+                logging.warning(
+                    f"Failed to send {item.uri} to queuer, {resp.status}")
 
 
 async def main():
@@ -30,8 +31,7 @@ async def main():
             if len(news_list) == 0:
                 logging.warning("Some parser returned list of 0 news")
 
-            session = aiohttp.ClientSession()
-            await asyncio.gather([send(x, session) for x in news_list])
+            await asyncio.gather(*[send(x) for x in news_list])
 
         await asyncio.sleep(DELAY)
 

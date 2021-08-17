@@ -10,6 +10,6 @@ from dataclasses_json import dataclass_json
 class News:
     title: str
     text: str
-    url: str
+    uri: str
     links: List[str]
     posted: str

@@ -17,7 +17,7 @@ services:
     depends_on: 
       - queuer
     environment: 
-      - QUEUER_URI="http://queuer:8080/submit"
+      - QUEUER_URI=http://queuer:8000/submit
 
 volumes: 
   redis_cache:

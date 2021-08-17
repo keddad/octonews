@@ -21,4 +21,5 @@ RUN cargo build --release
 FROM rust as runtime 
 COPY --from=builder /app/target/release/queuer /usr/local/bin
 
+ENV ROCKET_ADDRESS=0.0.0.0
 ENTRYPOINT ["/usr/local/bin/queuer"]
