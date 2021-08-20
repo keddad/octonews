@@ -34,7 +34,7 @@ class TassParser(MediaParser):
                     block = news_soup.find(class_="text-block")
                     text = block.text
                     links = [link.get('href') for link in block.find_all('a')]
-                    new = News(title=rss_e['title'], text=text, url=rss_e['link'], links=links,
+                    new = News(title=rss_e['title'], text=text, uri=rss_e['link'], links=links,
                                posted=datetime.fromtimestamp(mktime(rss_e["published_parsed"])).isoformat())
 
                     news.append(new)

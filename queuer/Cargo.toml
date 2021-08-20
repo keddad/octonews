@@ -12,3 +12,6 @@ lto = true
 rocket = { version = "0.5.0-rc.1", features=["json"] }
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
+redis = { version = "0.21.0", features = ["tokio-comp"] }
+serde_json = {version = "1.0"}
+log = "0.4"
