@@ -16,11 +16,10 @@ COPY . .
 # Copy over the cached dependencies
 COPY --from=cacher /app/target target
 COPY --from=cacher /usr/local/cargo /usr/local/cargo
-RUN cargo build
+RUN cargo build --release
 
 FROM rust as runtime 
-COPY --from=builder /app/target/debug/queuer /usr/local/bin
+COPY --from=builder /app/target/release/queuer /usr/local/bin
 
 ENV ROCKET_ADDRESS=0.0.0.0
-
 ENTRYPOINT ["/usr/local/bin/queuer"]

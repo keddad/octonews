@@ -1,3 +1,4 @@
+use log::debug;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::{get, launch, post, routes, State};
@@ -37,12 +38,13 @@ async fn submit(n: Json<News>, red: &State<redis::Client>) -> Status {
         .await
         .expect("Failed to put object to stream");
 
-    println!("Put {} to deduplicator", n.uri);
+    debug!("Put {} to deduplicator", n.uri);
     Status::Ok
 }
 
 #[launch]
 fn rocket() -> _ {
+    env_logger::init();
     rocket::build()
         .manage(redis::Client::open("redis://redis/").expect("Failed to connect to Redis"))
         .mount("/", routes![index, submit])
