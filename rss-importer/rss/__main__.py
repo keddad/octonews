@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.WARNING)
 
 parsers = [TassParser()]
 QUEUER_URI = environ.get("QUEUER_URI")
-DELAY = int(environ.get("DELAY", "60"))
+DELAY = int(environ.get("DELAY", "30"))
 
 
 async def send(item: News):

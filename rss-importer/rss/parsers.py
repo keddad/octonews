@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 from time import mktime
+import logging
 
 import aiohttp
 import feedparser
@@ -29,13 +30,16 @@ class TassParser(MediaParser):
             news = []
             for rss_e in rss["entries"]:
                 async with session.get(rss_e["link"]) as resp:
-                    news_text = await resp.text()
-                    news_soup = BeautifulSoup(news_text, 'html.parser')
-                    block = news_soup.find(class_="text-block")
-                    text = block.text
-                    links = [link.get('href') for link in block.find_all('a')]
-                    new = News(title=rss_e['title'], text=text, uri=rss_e['link'], links=links,
-                               posted=datetime.fromtimestamp(mktime(rss_e["published_parsed"])).isoformat())
+                    try:
+                        news_text = await resp.text()
+                        news_soup = BeautifulSoup(news_text, 'html.parser')
+                        block = news_soup.find(class_="text-block")
+                        text = block.text
+                        links = [link.get('href') for link in block.find_all('a')]
+                        new = News(title=rss_e['title'], text=text, uri=rss_e['link'], links=links,
+                                posted=datetime.fromtimestamp(mktime(rss_e["published_parsed"])).isoformat())
 
-                    news.append(new)
+                        news.append(new)
+                    except Exception as e:
+                        logging.warning(f"{e} while parsing {rss_e['link']}")
             return news
