@@ -29,11 +29,13 @@ async fn submit(n: Json<News>, red: &State<redis::Client>) -> Status {
         .await
         .expect("Failed to get_async_connection");
 
-    let _: String = redis::cmd("XADD")
-        .arg("deduplicator")
-        .arg("*")
-        .arg("news")
-        .arg(serde_json::to_string(&n.0).unwrap())
+    let _: () = redis::cmd("XADD")
+        .arg(&[
+            "deduplicator",
+            "*",
+            "news",
+            &serde_json::to_string(&n.0).unwrap(),
+        ])
         .query_async(&mut con)
         .await
         .expect("Failed to put object to stream");
