@@ -11,6 +11,15 @@ services:
     build: queuer
     depends_on: 
       - redis
+    environment:
+      - RUST_LOG=ERROR
+
+  deduplicator:
+    build: deduplicator
+    depends_on:
+      - redis
+    environment:
+      - RUST_LOG=ERROR
 
   rss-importer:
     build: rss-importer
