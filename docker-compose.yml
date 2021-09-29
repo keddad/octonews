@@ -21,6 +21,20 @@ services:
     environment:
       - RUST_LOG=ERROR
 
+  namextractor:
+    build: namextractor
+    depends_on:
+      - redis
+    environment:
+      - LOGURU_LEVEL=INFO
+
+  tagificator:
+    build: tagificator
+    depends_on:
+      - redis
+    environment:
+      - LOGURU_LEVEL=INFO
+
   rss-importer:
     build: rss-importer
     depends_on: 
